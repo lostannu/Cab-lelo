@@ -1,10 +1,15 @@
 package ac.projects.cablelo.model;
 
-import org.bson.types.ObjectId;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -15,17 +20,4 @@ public class User {
     private String phone;
     private String password;
 
-    public User() {
-    }
-    public User(String name, String email, String phone, String password) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.password = password;
-    }
-
-
-    public void setId(String id) {
-        this.id = id;
-    }
 }
