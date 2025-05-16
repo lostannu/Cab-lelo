@@ -1,9 +1,15 @@
 package ac.projects.cablelo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "cabs")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cab {
 
     @Id
@@ -14,13 +20,4 @@ public class Cab {
     private String farePerKm;
     private boolean available;
 
-    public Cab() {}
-    public Cab(String type, String vehicleNumber, String farePerKm, boolean available) {
-
-        this.type = type;
-        this.vehicleNumber = vehicleNumber;
-        this.farePerKm = farePerKm;
-        this.available = available;
-
-    }
 }

@@ -1,11 +1,17 @@
 package ac.projects.cablelo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Document(collection = "bookings")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Booking {
 
     @Id
@@ -21,20 +27,6 @@ public class Booking {
     private Double fare;
     private String status;
 
-    public Booking() {}
-
-    public Booking(String userId, String driverId, String cabId, String pickupLocation, String dropLocation, LocalDateTime bookingTime, Double distance, Double fare, String status) {
-        this.userId = userId;
-        this.driverId = driverId;
-        this.cabId = cabId;
-        this.pickupLocation = pickupLocation;
-        this.dropLocation = dropLocation;
-        this.bookingTime = bookingTime;
-        this.distance = distance;
-        this.fare = fare;
-        this.status = status;
-
-    }
 
 
 }

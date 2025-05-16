@@ -1,11 +1,17 @@
 package ac.projects.cablelo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
 @Document(collection = "payments")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -16,15 +22,5 @@ public class Payment {
     private String method; // UPI, Card, Cash, Wallet
     private LocalDateTime paymentTime;
     private String status;
-
-    public Payment() {}
-    public Payment( String paymentId, String bookingId, Double amount, String method, LocalDateTime paymentTime, String status) {
-        this.paymentId = paymentId;
-        this.bookingId = bookingId;
-        this.amount = amount;
-        this.method = method;
-        this.paymentTime = paymentTime;
-        this.status = status;
-    }
 
 }

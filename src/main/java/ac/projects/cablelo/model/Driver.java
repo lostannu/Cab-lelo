@@ -1,9 +1,15 @@
 package ac.projects.cablelo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "drivers")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Driver {
 
     @Id
@@ -15,15 +21,5 @@ public class Driver {
     private String vehicleNumber;
     private String vehicleType;
 
-    public Driver() {}
-    public Driver( String name, String licenseNumber, String phoneNumber, String vehicleNumber, String vehicleType) {
-
-        this.name = name;
-        this.licenseNumber = licenseNumber;
-        this.phoneNumber = phoneNumber;
-        this.vehicleNumber = vehicleNumber;
-        this.vehicleType = vehicleType;
-
-    }
 
 }
