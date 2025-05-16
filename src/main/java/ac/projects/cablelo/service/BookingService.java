@@ -20,7 +20,7 @@ public class BookingService {
     public Booking getBookingById(String id) {
         return bookingRepository.findById(id).orElse(null);
     }
-    public Booking saveBooking(Booking booking) {
+    public Booking createBooking(Booking booking) {
         return bookingRepository.save(booking);
     }
     public void updateBooking(String id ,Booking newbooking) {
