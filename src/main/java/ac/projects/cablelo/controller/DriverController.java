@@ -16,7 +16,7 @@ public class DriverController {
     private DriverService driverService;
 
     @GetMapping
-    public List<Driver> getAllUsers(){
+    public Object getAllUsers(){
         return driverService.getAllDrivers();
     }
     @GetMapping("/{id}")

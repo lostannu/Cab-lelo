@@ -19,12 +19,12 @@ public class CabController {
     }
 
     @GetMapping
-    public List<Cab> getAllCabs() {
+    public Object getAllCabs() {
         return cabService.getAllCabs();
     }
 
     @GetMapping("/{id}")
-    public Cab getCab(@PathVariable String id) {
+    public Object getCab(@PathVariable String id) {
         return cabService.getCab(id);
     }
 

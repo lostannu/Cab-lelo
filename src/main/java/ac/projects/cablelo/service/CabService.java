@@ -14,15 +14,20 @@ public class CabService {
     @Autowired
     private CabRepository cabRepository;
 
-    public List<Cab> getAllCabs() {
-        return cabRepository.findAll();
+    public Object getAllCabs() {
+        List<Cab> ls=cabRepository.findAll();
+        if(ls.size()>0) {
+            return ls;
+        }else{
+            return "No Cabs Found";
+        }
     }
-    public Cab getCab(String id) {
+    public Object getCab(String id) {
         Optional<Cab> cabOptional = cabRepository.findById(id);
         if(cabOptional.isPresent()){
             return cabOptional.get();
         }else {
-            return null;
+            return "No Cab found";
         }
     }
     public Cab createCab(Cab cab) {

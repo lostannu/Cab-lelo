@@ -15,8 +15,13 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping
-    public List<Booking> getAllBookings() {
-        return bookingService.getAllBookings();
+    public Object getAllBookings() {
+        List<Booking> ls=bookingService.getAllBookings();
+        if(ls.size()>0) {
+            return ls;
+        }else{
+            return "No Bookings Found";
+        }
     }
 
     @GetMapping("/{id}")

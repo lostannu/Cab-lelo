@@ -27,8 +27,15 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Object getAllUsers() {
+
+        List<User> ls=userRepository.findAll();
+        if(ls.size()>0) {
+            return ls;
+        }else{
+            System.out.println();
+            return "No User found";
+        }
     }
 
     public ResponseEntity<Object> getUserById(String id) {

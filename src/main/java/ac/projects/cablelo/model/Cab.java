@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "cabs")
@@ -16,6 +17,8 @@ public class Cab {
     private String id;
 
     private String type;
+    @Indexed(unique=true)
+    @NonNull
     private String vehicleNumber;
     private String farePerKm;
     private boolean available;

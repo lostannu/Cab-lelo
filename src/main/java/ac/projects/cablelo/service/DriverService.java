@@ -18,8 +18,14 @@ public class DriverService {
     public DriverService(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }
-    public List<Driver> getAllDrivers() {
-        return driverRepository.findAll();
+    public Object getAllDrivers() {
+        List<Driver> ls=driverRepository.findAll();
+        if(ls.size()>0) {
+            return ls;
+        }else{
+            return "No Driver found";
+        }
+
     }
     public ResponseEntity<Object> getDriverById(String id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
