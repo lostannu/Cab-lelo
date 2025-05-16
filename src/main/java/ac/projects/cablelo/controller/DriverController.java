@@ -3,6 +3,7 @@ package ac.projects.cablelo.controller;
 import ac.projects.cablelo.model.Driver;
 import ac.projects.cablelo.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class DriverController {
         return driverService.getAllDrivers();
     }
     @GetMapping("/{id}")
-    public Driver getDriverById(@PathVariable String id) {
+    public ResponseEntity<Object> getDriverById(@PathVariable String id) {
         return driverService.getDriverById(id);
     }
 
@@ -29,12 +30,12 @@ public class DriverController {
     }
 
     @PutMapping("/{id}")
-    public Driver updateDriver(@PathVariable String id, @RequestBody Driver driver) {
+    public ResponseEntity<Object> updateDriver(@PathVariable String id, @RequestBody Driver driver) {
         return driverService.updateDriver(id, driver);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteDriver(@PathVariable String id) {
+    public ResponseEntity<String> deleteDriver(@PathVariable String id) {
         return driverService.deleteDriver(id);
     }
 }

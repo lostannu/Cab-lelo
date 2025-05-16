@@ -31,21 +31,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User getUserById(String id) {
-        return userRepository.findById(id).orElse(null);
+    public ResponseEntity<Object> getUserById(String id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()){
+            return new ResponseEntity<>(optionalUser.get(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("No User Found with id : "+id,HttpStatus.NOT_FOUND);
+        }
     }
 
-    public ResponseEntity<User> updateUser(String id, User updatedUser) {
+    public ResponseEntity<Object> updateUser(String id, User updatedUser) {
         Optional<User> existing = userRepository.findById(id);
         if (existing.isPresent()) {
             updatedUser.setId(id);
-            return new ResponseEntity(userRepository.save(updatedUser), HttpStatus.OK);
+            userRepository.save(updatedUser);
+            return new ResponseEntity<>("User UPDATED", HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("User Not Found with id : "+id,HttpStatus.NOT_FOUND);
+    }
+    public ResponseEntity<String> deleteUser(String id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return new ResponseEntity<>("User deleted with id: " + id, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
     }
 
-    public String deleteUser(String id) {
-        userRepository.deleteById(id);
-        return "User deleted with id: " + id;
-    }
 }

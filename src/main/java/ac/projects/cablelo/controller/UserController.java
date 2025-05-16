@@ -1,11 +1,8 @@
 package ac.projects.cablelo.controller;
 import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.service.UserService;
-import ch.qos.logback.core.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +25,7 @@ public class UserController {
         return userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    public User getUser(@PathVariable String id){
+    public ResponseEntity<Object> getUser(@PathVariable String id){
         return userService.getUserById(id);
     }
     @PostMapping
@@ -36,13 +33,14 @@ public class UserController {
         return userService.createUser(user);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String id ,@RequestBody User user){
+    public ResponseEntity<Object> updateUser(@PathVariable String id ,@RequestBody User user){
         return userService.updateUser(id, user);
     }
     @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable String id){
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
         return userService.deleteUser(id);
     }
+
 
 
 }
