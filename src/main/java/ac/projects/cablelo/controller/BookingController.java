@@ -25,7 +25,7 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    public Booking getBookingById(@PathVariable String id) {
+    public Object getBookingById(@PathVariable String id) {
         return bookingService.getBookingById(id);
     }
 
@@ -35,8 +35,9 @@ public class BookingController {
     }
 
     @PutMapping("/{id}")
-    public void updateBooking(@PathVariable String id, @RequestBody Booking booking) {
-        bookingService.updateBooking(id, booking);
+    public Object updateBooking(@PathVariable String id, @RequestBody Booking booking) {
+        return bookingService.updateBooking(id, booking);
+
     }
 
     @DeleteMapping("/{id}")

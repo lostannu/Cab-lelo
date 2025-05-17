@@ -1,5 +1,7 @@
 package ac.projects.cablelo.controller;
+import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.model.User;
+import ac.projects.cablelo.service.BookingService;
 import ac.projects.cablelo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,8 @@ import java.util.List;
 public class UserController {
 
 
+    @Autowired
+    private BookingService bookingService;
     private UserService userService;
 
     @Autowired
@@ -20,6 +24,10 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/{userId}/bookings")
+    public Object getBookingsByUserId(@PathVariable String userId) {
+        return bookingService.getBookingsByUserId(userId);
+    }
     @GetMapping
     public Object getAllUsers(){
         return userService.getAllUsers();

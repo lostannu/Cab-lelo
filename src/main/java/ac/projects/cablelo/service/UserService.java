@@ -1,6 +1,7 @@
 package ac.projects.cablelo.service;
 
 
+import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+
+    @Autowired
+    private BookingService bookingService;
 
     private UserRepository userRepository;
 

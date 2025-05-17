@@ -21,7 +21,7 @@ public class Booking {
     private String userId;
     private String driverId;
     private String cabId;
-    private String pickupLocation;
+    private String pickUpLocation;
     private String dropLocation;
     private LocalDateTime bookingTime;
     private Double distance;

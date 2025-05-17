@@ -3,6 +3,8 @@ package ac.projects.cablelo.service;
 import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.repository.BookingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,19 +21,36 @@ public class BookingService {
 
 
     }
-    public Booking getBookingById(String id) {
-        return bookingRepository.findById(id).orElse(null);
+    public Object getBookingsByUserId(String userId) {
+        List<Booking> lb=bookingRepository.findByUserId(userId);
+        if(lb.size()>0) {
+            return lb;
+        }else{
+            System.out.println();
+            return "No Bookings Found";
+        }
+
+    }
+    public Object getBookingById(String id) {
+        Optional<Booking> booking=bookingRepository.findById(id);
+        if(booking.isPresent()) {
+            return booking.get();
+        }else{
+            return "Booking Not Found";
+        }
+
     }
     public Booking createBooking(Booking booking) {
         return bookingRepository.save(booking);
     }
-    public void updateBooking(String id ,Booking newbooking) {
+    public Object updateBooking(String id ,Booking newbooking) {
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
             newbooking.setId(id);
             bookingRepository.save(newbooking);
+            return new ResponseEntity<>("Booking Updated ", HttpStatus.OK);
         }else {
-            System.out.println("Booking not found");
+            return new ResponseEntity<>("Booking not Found ", HttpStatus.NOT_FOUND);
         }
     }
 
