@@ -3,6 +3,8 @@ package ac.projects.cablelo.service;
 import ac.projects.cablelo.model.Cab;
 import ac.projects.cablelo.repository.CabRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,42 +16,44 @@ public class CabService {
     @Autowired
     private CabRepository cabRepository;
 
-    public Object getAllCabs() {
+    public ResponseEntity<List<Cab>> getAllCabs() {
         List<Cab> ls=cabRepository.findAll();
-        if(ls.size()>0) {
-            return ls;
+        if(ls.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            return "No Cabs Found";
+            return new ResponseEntity<>(ls, HttpStatus.OK);
         }
     }
-    public Object getCab(String id) {
+    public ResponseEntity<Cab> getCab(String id) {
         Optional<Cab> cabOptional = cabRepository.findById(id);
         if(cabOptional.isPresent()){
-            return cabOptional.get();
+            return new ResponseEntity<>(cabOptional.get(), HttpStatus.OK);
         }else {
-            return "No Cab found";
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    public Cab createCab(Cab cab) {
-        return cabRepository.save(cab);
+    public ResponseEntity<String> createCab(Cab cab) {
+        cabRepository.save(cab);
+        return new ResponseEntity<>("Cab details added with id: "+cab.getId(), HttpStatus.CREATED);
     }
-    public Cab updateCab(String id, Cab updatedCab) {
+    public ResponseEntity<String> updateCab(String id, Cab updatedCab) {
         Optional<Cab> cabOptional = cabRepository.findById(id);
         if(cabOptional.isPresent()){
             updatedCab.setId(id);
-            return cabRepository.save(updatedCab);
+            cabRepository.save(updatedCab);
+            return new ResponseEntity<>("Cab details updated with "+updatedCab.getId(), HttpStatus.OK);
         }else{
-            return null;
+            return new ResponseEntity<>("No Cab Found ",HttpStatus.NOT_FOUND);
         }
     }
-    public void deleteCab(String id) {
+    public ResponseEntity<String> deleteCab(String id) {
         Optional<Cab> cabOptional = cabRepository.findById(id);
         if(cabOptional.isPresent()){
             cabRepository.delete(cabOptional.get());
+            return new ResponseEntity<>("Cab deleted ", HttpStatus.OK);
 
-        }else{
-            System.out.println("Cab not found");
+        }else {
+            return new ResponseEntity<>("No Cab Found ", HttpStatus.NOT_FOUND);
         }
     }
-
 }

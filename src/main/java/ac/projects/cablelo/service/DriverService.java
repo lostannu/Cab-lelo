@@ -18,27 +18,28 @@ public class DriverService {
     public DriverService(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }
-    public Object getAllDrivers() {
+    public ResponseEntity<List<Driver>> getAllDrivers() {
         List<Driver> ls=driverRepository.findAll();
-        if(ls.size()>0) {
-            return ls;
+        if(ls.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
-            return "No Driver found";
+            return new ResponseEntity<>(ls,HttpStatus.OK);
         }
 
     }
-    public ResponseEntity<Object> getDriverById(String id) {
+    public ResponseEntity<Driver> getDriverById(String id) {
         Optional<Driver> optionalDriver = driverRepository.findById(id);
         if (optionalDriver.isPresent()) {
             return new ResponseEntity<>(optionalDriver.get(), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("No Driver Found with id : "+id,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    public Driver createDriver(Driver driver) {
-        return driverRepository.save(driver);
+    public ResponseEntity<String> createDriver(Driver driver) {
+        driverRepository.save(driver);
+        return new ResponseEntity<>("Driver Created ",HttpStatus.CREATED);
     }
-    public ResponseEntity<Object> updateDriver(String id,Driver updatedDriver) {
+    public ResponseEntity<String> updateDriver(String id,Driver updatedDriver) {
         Optional<Driver> driverOptional = driverRepository.findById(id);
         if(driverOptional.isPresent()){
             updatedDriver.setId(id);

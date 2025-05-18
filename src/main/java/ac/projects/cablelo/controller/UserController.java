@@ -37,15 +37,15 @@ public class UserController {
         return userService.getAllUsers();
     }
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable String id){
+    public ResponseEntity<User> getUser(@PathVariable String id){
         return userService.getUserById(id);
     }
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public ResponseEntity<String> createUser(@RequestBody User user){
         return userService.createUser(user);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateUser(@PathVariable String id ,@RequestBody User user){
+    public ResponseEntity<String> updateUser(@PathVariable String id ,@RequestBody User user){
         return userService.updateUser(id, user);
     }
     @DeleteMapping("/{id}")

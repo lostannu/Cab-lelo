@@ -1,6 +1,7 @@
 package ac.projects.cablelo.controller;
 
 import ac.projects.cablelo.model.Driver;
+import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.service.DriverService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,21 +17,22 @@ public class DriverController {
     private DriverService driverService;
 
     @GetMapping
-    public Object getAllUsers(){
+    public ResponseEntity<List<Driver>> getAllDrivers(){
         return driverService.getAllDrivers();
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getDriverById(@PathVariable String id) {
+    public ResponseEntity<Driver> getDriverById(@PathVariable String id) {
         return driverService.getDriverById(id);
     }
 
     @PostMapping
-    public Driver createDriver(@RequestBody Driver driver) {
+    public ResponseEntity<String> createDriver(@RequestBody Driver driver) {
         return driverService.createDriver(driver);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Object> updateDriver(@PathVariable String id, @RequestBody Driver driver) {
+    public ResponseEntity<String> updateDriver(@PathVariable String id, @RequestBody Driver driver) {
         return driverService.updateDriver(id, driver);
     }
 

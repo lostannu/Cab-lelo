@@ -27,31 +27,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public ResponseEntity<String> createUser(User user) {
+        userRepository.save(user);
+        return new ResponseEntity<>("User Created ", HttpStatus.OK);
     }
 
-    public Object getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
 
         List<User> ls=userRepository.findAll();
-        if(ls.size()>0) {
-            return ls;
+        if(ls.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            System.out.println();
-            return "No User found";
+            return new ResponseEntity<>(ls, HttpStatus.OK);
         }
     }
 
-    public ResponseEntity<Object> getUserById(String id) {
+    public ResponseEntity<User> getUserById(String id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if(optionalUser.isPresent()){
             return new ResponseEntity<>(optionalUser.get(), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>("No User Found with id : "+id,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    public ResponseEntity<Object> updateUser(String id, User updatedUser) {
+    public ResponseEntity<String> updateUser(String id, User updatedUser) {
         Optional<User> existing = userRepository.findById(id);
         if (existing.isPresent()) {
             updatedUser.setId(id);
@@ -61,9 +61,10 @@ public class UserService {
         return new ResponseEntity<>("User Not Found with id : "+id,HttpStatus.NOT_FOUND);
     }
     public ResponseEntity<String> deleteUser(String id) {
-        if (userRepository.existsById(id)) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()) {
             userRepository.deleteById(id);
-            return new ResponseEntity<>("User deleted with id: " + id, HttpStatus.OK);
+            return new ResponseEntity<>("User Deleted ", HttpStatus.OK);
         }
         return new ResponseEntity<>("User not found with id: " + id, HttpStatus.NOT_FOUND);
     }

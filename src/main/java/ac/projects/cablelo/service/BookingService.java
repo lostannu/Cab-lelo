@@ -27,12 +27,12 @@ public class BookingService {
 
 
     }
-    public ResponseEntity<Optional<Booking>> getBookingById(String id) {
+    public ResponseEntity<Booking> getBookingById(String id) {
         Optional<Booking> v=bookingRepository.findById(id);
-        if(v==null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        if(v.isPresent()) {
+            return new ResponseEntity<>(v.get(),HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(v,HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
     }
@@ -45,7 +45,9 @@ public class BookingService {
         if(ls.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
+
             return new ResponseEntity<>(ls,HttpStatus.OK);
+
         }
     }
 

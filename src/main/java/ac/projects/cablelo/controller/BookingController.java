@@ -23,7 +23,7 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Booking>> getBookingById(@PathVariable String id) {
+    public ResponseEntity<Booking> getBookingById(@PathVariable String id) {
         return bookingService.getBookingById(id);
     }
 

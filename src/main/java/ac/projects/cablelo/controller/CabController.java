@@ -3,6 +3,7 @@ package ac.projects.cablelo.controller;
 import ac.projects.cablelo.model.Cab;
 import ac.projects.cablelo.service.CabService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,27 +20,27 @@ public class CabController {
     }
 
     @GetMapping
-    public Object getAllCabs() {
+    public ResponseEntity<List<Cab>> getAllCabs() {
         return cabService.getAllCabs();
     }
 
     @GetMapping("/{id}")
-    public Object getCab(@PathVariable String id) {
+    public ResponseEntity<Cab> getCab(@PathVariable String id) {
         return cabService.getCab(id);
     }
 
     @PostMapping
-    public Cab createCab(@RequestBody Cab cab) {
+    public ResponseEntity<String> createCab(@RequestBody Cab cab) {
         return cabService.createCab(cab);
     }
 
     @PutMapping("/{id}")
-    public Cab updateCab(@PathVariable String id, @RequestBody Cab cab) {
+    public ResponseEntity<String> updateCab(@PathVariable String id, @RequestBody Cab cab) {
         return cabService.updateCab(id, cab);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCab(@PathVariable String id) {
-        cabService.deleteCab(id);
+    public ResponseEntity<String> deleteCab(@PathVariable String id) {
+        return cabService.deleteCab(id);
     }
 }
