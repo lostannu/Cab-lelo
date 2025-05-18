@@ -1,6 +1,7 @@
 package ac.projects.cablelo.controller;
 import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.model.User;
+import ac.projects.cablelo.repository.BookingRepository;
 import ac.projects.cablelo.service.BookingService;
 import ac.projects.cablelo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +15,22 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
 
+    private BookingRepository bookingRepository;
 
-    @Autowired
     private BookingService bookingService;
+
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BookingService bookingService, BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
         this.userService = userService;
+        this.bookingService = bookingService;
     }
 
     @GetMapping("/{userId}/bookings")
-    public Object getBookingsByUserId(@PathVariable String userId) {
-        return bookingService.getBookingsByUserId(userId);
+    public ResponseEntity<List<Booking>> getBookingsByUserId(@PathVariable String userId) {
+        return bookingService.findByUserId(userId);
     }
     @GetMapping
     public Object getAllUsers(){

@@ -3,9 +3,12 @@ package ac.projects.cablelo.controller;
 import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/bookings")
@@ -15,33 +18,29 @@ public class BookingController {
     private BookingService bookingService;
 
     @GetMapping
-    public Object getAllBookings() {
-        List<Booking> ls=bookingService.getAllBookings();
-        if(ls.size()>0) {
-            return ls;
-        }else{
-            return "No Bookings Found";
-        }
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        return bookingService.getAllBookings();
     }
 
     @GetMapping("/{id}")
-    public Object getBookingById(@PathVariable String id) {
+    public ResponseEntity<Optional<Booking>> getBookingById(@PathVariable String id) {
         return bookingService.getBookingById(id);
     }
 
     @PostMapping
-    public Booking createBooking(@RequestBody Booking booking) {
+    public ResponseEntity<String> createBooking(@RequestBody Booking booking) {
         return bookingService.createBooking(booking);
+
     }
 
     @PutMapping("/{id}")
-    public Object updateBooking(@PathVariable String id, @RequestBody Booking booking) {
+    public ResponseEntity<String> updateBooking(@PathVariable String id, @RequestBody Booking booking) {
         return bookingService.updateBooking(id, booking);
 
     }
 
     @DeleteMapping("/{id}")
-    public void deleteBooking(@PathVariable String id) {
-        bookingService.deleteBooking(id);
+    public ResponseEntity<String> deleteBooking(@PathVariable String id) {
+        return bookingService.deleteBooking(id);
     }
 }

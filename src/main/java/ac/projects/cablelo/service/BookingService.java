@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,34 +17,40 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    public List<Booking> getAllBookings() {
-        return bookingRepository.findAll();
+    public ResponseEntity<List<Booking>> getAllBookings() {
+        List<Booking> ls = bookingRepository.findAll();
+        if(ls.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }else {
+            return new ResponseEntity<>(ls,HttpStatus.OK);
+        }
 
 
     }
-    public Object getBookingsByUserId(String userId) {
-        List<Booking> lb=bookingRepository.findByUserId(userId);
-        if(lb.size()>0) {
-            return lb;
+    public ResponseEntity<Optional<Booking>> getBookingById(String id) {
+        Optional<Booking> v=bookingRepository.findById(id);
+        if(v==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }else{
-            System.out.println();
-            return "No Bookings Found";
+            return new ResponseEntity<>(v,HttpStatus.OK);
         }
 
     }
-    public Object getBookingById(String id) {
-        Optional<Booking> booking=bookingRepository.findById(id);
-        if(booking.isPresent()) {
-            return booking.get();
+    public ResponseEntity<String> createBooking(Booking booking) {
+        bookingRepository.save(booking);
+        return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
+    }
+    public ResponseEntity<List<Booking>> findByUserId(@PathVariable String userId) {
+        List<Booking> ls = bookingRepository.findByUserId(userId);
+        if(ls.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
-            return "Booking Not Found";
+            return new ResponseEntity<>(ls,HttpStatus.OK);
         }
+    }
 
-    }
-    public Booking createBooking(Booking booking) {
-        return bookingRepository.save(booking);
-    }
-    public Object updateBooking(String id ,Booking newbooking) {
+    public ResponseEntity<String> updateBooking(String id ,Booking newbooking) {
+
         Optional<Booking> booking = bookingRepository.findById(id);
         if (booking.isPresent()) {
             newbooking.setId(id);
@@ -54,13 +61,13 @@ public class BookingService {
         }
     }
 
-    public void deleteBooking(String id) {
+    public ResponseEntity<String> deleteBooking(String id) {
         Optional<Booking> book=bookingRepository.findById(id);
         if(book.isPresent()) {
             bookingRepository.delete(book.get());
-            System.out.println("Booking deleted");
+            return new ResponseEntity<>("Booking Deleted ", HttpStatus.OK);
         }else{
-            System.out.println("Booking not found");
+            return new ResponseEntity<>("Booking Not Found ", HttpStatus.NOT_FOUND);
         }
     }
 
