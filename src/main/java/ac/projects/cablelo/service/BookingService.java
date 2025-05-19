@@ -1,8 +1,10 @@
 package ac.projects.cablelo.service;
 
 import ac.projects.cablelo.model.Booking;
+import ac.projects.cablelo.model.Driver;
 import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.repository.BookingRepository;
+import ac.projects.cablelo.repository.DriverRepository;
 import ac.projects.cablelo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,10 @@ public class BookingService {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private DriverRepository driverRepository;
+    @Autowired
+    private DriverService driverService;
 
     public ResponseEntity<List<Booking>> getAllBookings() {
         List<Booking> ls = bookingRepository.findAll();
@@ -42,12 +48,21 @@ public class BookingService {
         }
 
     }
-    public ResponseEntity<String> createBooking(Booking booking , String userId) {
+    public ResponseEntity<String> createBooking(Booking booking ) {
+        String id=booking.getId();
+        Optional<Booking> v=bookingRepository.findById(id);
+        if(v.isPresent()) {
+            return new ResponseEntity<>("Booking already exists",HttpStatus.CONFLICT);
+        }
+        String userId = booking.getUserId();
+        String driverId = booking.getDriverId();
         User user= userService.getUserById(userId).getBody();
+        Driver driver=driverService.getDriverById(driverId).getBody();
         if(user==null) {
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
         Booking book = bookingRepository.save(booking);
+        driver.getBookingList().add(book);
         user.getBookings().add(book);
         userRepository.save(user);
         return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
@@ -78,6 +93,15 @@ public class BookingService {
     public ResponseEntity<String> deleteBooking(String id) {
         Optional<Booking> book=bookingRepository.findById(id);
         if(book.isPresent()) {
+            String userId = book.get().getUserId();
+            String driverId = book.get().getDriverId();
+            User user = userService.getUserById(userId).getBody();
+            Driver driver = driverService.getDriverById(driverId).getBody();
+            user.getBookings().remove(book.get());
+            driver.getBookingList().remove(book.get());
+            userRepository.save(user);
+            driverRepository.save(driver);
+
             bookingRepository.delete(book.get());
             return new ResponseEntity<>("Booking Deleted ", HttpStatus.OK);
         }else{

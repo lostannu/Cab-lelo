@@ -6,7 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "drivers")
 @Data
@@ -15,6 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Driver {
 
     @Id
+
     private String id;
 
     private String name;
@@ -27,6 +32,9 @@ public class Driver {
 
     private String vehicleNumber;
     private String vehicleType;
+
+    @DBRef
+    private List<Booking> bookingList=new ArrayList<>();
 
 
 }

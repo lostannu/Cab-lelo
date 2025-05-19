@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 public class Booking {
 
     @Id
+
     private String id;
     private String userId;
     private String driverId;
