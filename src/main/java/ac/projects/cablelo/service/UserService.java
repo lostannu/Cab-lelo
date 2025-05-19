@@ -1,12 +1,11 @@
 package ac.projects.cablelo.service;
 
 
-import ac.projects.cablelo.model.Booking;
+
 import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +16,7 @@ import java.util.Optional;
 public class UserService {
 
 
-    @Autowired
-    private BookingService bookingService;
+
 
     private UserRepository userRepository;
 

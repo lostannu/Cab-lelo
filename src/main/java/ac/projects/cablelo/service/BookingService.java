@@ -1,7 +1,9 @@
 package ac.projects.cablelo.service;
 
 import ac.projects.cablelo.model.Booking;
+import ac.projects.cablelo.model.User;
 import ac.projects.cablelo.repository.BookingRepository;
+import ac.projects.cablelo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,10 @@ public class BookingService {
 
     @Autowired
     private BookingRepository bookingRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     public ResponseEntity<List<Booking>> getAllBookings() {
         List<Booking> ls = bookingRepository.findAll();
@@ -36,8 +42,14 @@ public class BookingService {
         }
 
     }
-    public ResponseEntity<String> createBooking(Booking booking) {
-        bookingRepository.save(booking);
+    public ResponseEntity<String> createBooking(Booking booking , String userId) {
+        User user= userService.getUserById(userId).getBody();
+        if(user==null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        Booking book = bookingRepository.save(booking);
+        user.getBookings().add(book);
+        userRepository.save(user);
         return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
     }
     public ResponseEntity<List<Booking>> findByUserId(@PathVariable String userId) {
