@@ -15,10 +15,6 @@ import java.util.Optional;
 
 @Service
 public class UserService {
-
-
-
-
     private UserRepository userRepository;
 
     @Autowired
@@ -50,7 +46,6 @@ public class UserService {
         }
     }
 
-    @Transactional
     public ResponseEntity<String> updateUser(String id, User updatedUser) {
         Optional<User> existing = userRepository.findById(id);
         if (existing.isPresent()) {
@@ -60,7 +55,6 @@ public class UserService {
         }
         return new ResponseEntity<>("User Not Found with id : "+id,HttpStatus.NOT_FOUND);
     }
-    @Transactional
     public ResponseEntity<String> deleteUser(String id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {

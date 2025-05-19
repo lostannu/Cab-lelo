@@ -51,23 +51,27 @@ public class BookingService {
     }
     @Transactional
     public ResponseEntity<String> createBooking(Booking booking ) {
-        String id=booking.getId();
-        Optional<Booking> v=bookingRepository.findById(id);
-        if(v.isPresent()) {
-            return new ResponseEntity<>("Booking already exists",HttpStatus.CONFLICT);
+        try{
+            String id=booking.getId();
+            Optional<Booking> v=bookingRepository.findById(id);
+            if(v.isPresent()) {
+                return new ResponseEntity<>("Booking already exists",HttpStatus.CONFLICT);
+            }
+            String userId = booking.getUserId();
+            String driverId = booking.getDriverId();
+            User user= userService.getUserById(userId).getBody();
+            Driver driver=driverService.getDriverById(driverId).getBody();
+            if(user==null) {
+                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            }
+            Booking book = bookingRepository.save(booking);
+            driver.getBookingList().add(book);
+            user.getBookings().add(book);
+            userRepository.save(user);
+            return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
+        }catch(Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
         }
-        String userId = booking.getUserId();
-        String driverId = booking.getDriverId();
-        User user= userService.getUserById(userId).getBody();
-        Driver driver=driverService.getDriverById(driverId).getBody();
-        if(user==null) {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-        }
-        Booking book = bookingRepository.save(booking);
-        driver.getBookingList().add(book);
-        user.getBookings().add(book);
-        userRepository.save(user);
-        return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
     }
     public ResponseEntity<List<Booking>> findByUserId(@PathVariable String userId) {
         List<Booking> ls = bookingRepository.findByUserId(userId);
@@ -93,21 +97,27 @@ public class BookingService {
     }
     @Transactional
     public ResponseEntity<String> deleteBooking(String id) {
-        Optional<Booking> book=bookingRepository.findById(id);
-        if(book.isPresent()) {
-            String userId = book.get().getUserId();
-            String driverId = book.get().getDriverId();
-            User user = userService.getUserById(userId).getBody();
-            Driver driver = driverService.getDriverById(driverId).getBody();
-            user.getBookings().remove(book.get());
-            driver.getBookingList().remove(book.get());
-            userRepository.save(user);
-            driverRepository.save(driver);
+        try{
+            Optional<Booking> book=bookingRepository.findById(id);
+            if(book.isPresent()) {
+                String userId = book.get().getUserId();
+                String driverId = book.get().getDriverId();
+                User user = userService.getUserById(userId).getBody();
+                Driver driver = driverService.getDriverById(driverId).getBody();
+                user.getBookings().remove(book.get());
+                driver.getBookingList().remove(book.get());
+                user.setPhone(null);
+                userRepository.save(user);
 
-            bookingRepository.delete(book.get());
-            return new ResponseEntity<>("Booking Deleted ", HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>("Booking Not Found ", HttpStatus.NOT_FOUND);
+                driverRepository.save(driver);
+
+                bookingRepository.delete(book.get());
+                return new ResponseEntity<>("Booking Deleted ", HttpStatus.OK);
+            }else{
+                return new ResponseEntity<>("Booking Not Found ", HttpStatus.NOT_FOUND);
+            }
+        }catch(Exception e){
+            return new ResponseEntity<>(e +"", HttpStatus.NOT_FOUND);
         }
     }
 
