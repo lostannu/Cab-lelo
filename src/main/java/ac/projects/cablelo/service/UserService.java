@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public ResponseEntity<String> updateUser(String id, User updatedUser) {
         Optional<User> existing = userRepository.findById(id);
         if (existing.isPresent()) {
@@ -58,6 +60,7 @@ public class UserService {
         }
         return new ResponseEntity<>("User Not Found with id : "+id,HttpStatus.NOT_FOUND);
     }
+    @Transactional
     public ResponseEntity<String> deleteUser(String id) {
         Optional<User> optionalUser = userRepository.findById(id);
         if (optionalUser.isPresent()) {

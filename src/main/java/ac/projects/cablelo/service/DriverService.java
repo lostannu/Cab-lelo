@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class DriverService {
         driverRepository.save(driver);
         return new ResponseEntity<>("Driver Created ",HttpStatus.CREATED);
     }
+    @Transactional
     public ResponseEntity<String> updateDriver(String id,Driver updatedDriver) {
         Optional<Driver> driverOptional = driverRepository.findById(id);
         if(driverOptional.isPresent()){
@@ -50,6 +52,7 @@ public class DriverService {
 
 
     }
+    @Transactional
     public ResponseEntity<String> deleteDriver(String id) {
         Optional<Driver> driverOptional = driverRepository.findById(id);
         if (driverOptional.isPresent()) {

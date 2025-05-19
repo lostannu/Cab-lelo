@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -48,6 +49,7 @@ public class BookingService {
         }
 
     }
+    @Transactional
     public ResponseEntity<String> createBooking(Booking booking ) {
         String id=booking.getId();
         Optional<Booking> v=bookingRepository.findById(id);
@@ -89,7 +91,7 @@ public class BookingService {
             return new ResponseEntity<>("Booking not Found ", HttpStatus.NOT_FOUND);
         }
     }
-
+    @Transactional
     public ResponseEntity<String> deleteBooking(String id) {
         Optional<Booking> book=bookingRepository.findById(id);
         if(book.isPresent()) {
