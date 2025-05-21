@@ -1,5 +1,6 @@
 package ac.projects.cablelo.model;
 
+import com.mongodb.lang.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,17 +20,11 @@ import java.util.List;
 public class Driver {
 
     @Id
-
     private String id;
 
     private String name;
-    @Indexed(unique=true)
-    @NonNull
     private String licenseNumber;
-    @Indexed(unique=true)
-    @NonNull
-    private String phoneNumber;
-
+    private String phone;
     private String vehicleNumber;
     private String vehicleType;
 

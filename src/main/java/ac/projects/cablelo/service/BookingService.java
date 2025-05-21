@@ -68,6 +68,7 @@ public class BookingService {
             driver.getBookingList().add(book);
             user.getBookings().add(book);
             userRepository.save(user);
+            driverRepository.save(driver);
             return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
         }catch(Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
@@ -106,7 +107,7 @@ public class BookingService {
                 Driver driver = driverService.getDriverById(driverId).getBody();
                 user.getBookings().remove(book.get());
                 driver.getBookingList().remove(book.get());
-                user.setPhone(null);
+
                 userRepository.save(user);
 
                 driverRepository.save(driver);

@@ -19,6 +19,7 @@ public class DriverService {
     public DriverService(DriverRepository driverRepository) {
         this.driverRepository = driverRepository;
     }
+
     public ResponseEntity<List<Driver>> getAllDrivers() {
         List<Driver> ls=driverRepository.findAll();
         if(ls.isEmpty()) {
