@@ -15,6 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Cab {
 
     @Id
+    @NonNull
     private String id;
 
     private String type;

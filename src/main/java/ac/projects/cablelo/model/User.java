@@ -21,6 +21,7 @@ import java.util.List;
 public class User {
 
     @Id
+    @NonNull
     private String id;
 
     private String name;

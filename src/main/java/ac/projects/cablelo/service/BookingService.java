@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
@@ -51,28 +52,26 @@ public class BookingService {
     }
     @Transactional
     public ResponseEntity<String> createBooking(Booking booking ) {
-        try{
-            String id=booking.getId();
-            Optional<Booking> v=bookingRepository.findById(id);
-            if(v.isPresent()) {
-                return new ResponseEntity<>("Booking already exists",HttpStatus.CONFLICT);
-            }
-            String userId = booking.getUserId();
-            String driverId = booking.getDriverId();
-            User user= userService.getUserById(userId).getBody();
-            Driver driver=driverService.getDriverById(driverId).getBody();
-            if(user==null) {
-                return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
-            }
-            Booking book = bookingRepository.save(booking);
-            driver.getBookingList().add(book);
-            user.getBookings().add(book);
-            userRepository.save(user);
-            driverRepository.save(driver);
-            return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
-        }catch(Exception e){
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
+
+        String id=booking.getId();
+        Optional<Booking> v=bookingRepository.findById(id);
+        if(v.isPresent()) {
+            return new ResponseEntity<>("Booking already exists",HttpStatus.CONFLICT);
         }
+        String userId = booking.getUserId();
+        String driverId = booking.getDriverId();
+        User user= userService.getUserById(userId).getBody();
+        Driver driver=driverService.getDriverById(driverId).getBody();
+        if(user==null) {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+        Booking book = bookingRepository.save(booking);
+        driver.getBookingList().add(book);
+        user.getBookings().add(book);
+        userRepository.save(user);
+        driverRepository.save(driver);
+        return new ResponseEntity<>("Booking created with ID "+booking.getId(), HttpStatus.CREATED);
+
     }
     public ResponseEntity<List<Booking>> findByUserId(@PathVariable String userId) {
         List<Booking> ls = bookingRepository.findByUserId(userId);

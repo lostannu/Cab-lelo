@@ -20,6 +20,7 @@ import java.util.List;
 public class Driver {
 
     @Id
+    @NonNull
     private String id;
 
     private String name;
