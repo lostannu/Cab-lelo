@@ -10,7 +10,6 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,5 +31,6 @@ public class User {
 
     @DBRef
     private List<Booking> bookings=new ArrayList<>();
+    private String role;
 
 }

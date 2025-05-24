@@ -31,6 +31,7 @@ public class Driver {
 
     @DBRef
     private List<Booking> bookingList=new ArrayList<>();
+    private String role;
 
 
 }
