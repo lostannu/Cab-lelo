@@ -31,6 +31,6 @@ public class User {
 
     @DBRef
     private List<Booking> bookings=new ArrayList<>();
-    private String role;
+    private List<String> role;
 
 }
