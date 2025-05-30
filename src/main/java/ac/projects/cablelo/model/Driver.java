@@ -26,8 +26,7 @@ public class Driver {
     private String name;
     private String licenseNumber;
     private String phone;
-    private String vehicleNumber;
-    private String vehicleType;
+    
 
     @DBRef
     private List<Booking> bookingList=new ArrayList<>();
