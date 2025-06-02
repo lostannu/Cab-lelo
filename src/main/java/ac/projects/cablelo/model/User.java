@@ -22,7 +22,7 @@ public class User {
 
     private String name;
 
-    private String phoneNumber;  // <-- Add this
+    private String phoneNumber;
 
-    private String role; // e.g., USER, ADMIN
+    private String role;
 }

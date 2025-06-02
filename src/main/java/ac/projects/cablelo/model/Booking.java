@@ -26,9 +26,8 @@ public class Booking {
 
     private String bookingDate;
 
-    private String bookingTime;  // <-- Add this field
+    private String bookingTime;
 
     private String status;
 
-    // other fields...
 }

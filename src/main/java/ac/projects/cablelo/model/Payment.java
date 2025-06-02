@@ -20,7 +20,7 @@ public class Payment {
 
     private String paymentMethod;
 
-    private String paymentStatus; // This already exists
+    private String paymentStatus;
 
     private String paymentDate;
 

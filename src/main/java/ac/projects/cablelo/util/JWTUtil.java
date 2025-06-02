@@ -45,7 +45,7 @@ public class JWTUtil {
             Jwts.parser().setSigningKey(secret).parseClaimsJws(authToken);
             return true;
         } catch (Exception ex) {
-            // You can log the exception or handle it accordingly
+            System.out.println(ex.getMessage());
         }
         return false;
     }

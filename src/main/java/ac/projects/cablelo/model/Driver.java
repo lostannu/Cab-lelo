@@ -24,5 +24,4 @@ public class Driver {
     private String email;
     private boolean available;
 
-    // Constructors, Getters, and Setters
 }

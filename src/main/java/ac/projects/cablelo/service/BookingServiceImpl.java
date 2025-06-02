@@ -47,20 +47,16 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public ResponseEntity<String> createBooking(Booking booking) {
-        // Validate user exists
         if (!userRepository.existsById(booking.getUserId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid User ID");
         }
-        // Validate driver exists
         if (!driverRepository.existsById(booking.getDriverId())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid Driver ID");
         }
-        // Validate cab exists and is available
         Optional<ac.projects.cablelo.model.Cab> cabOptional = cabRepository.findById(booking.getCabId());
         if (cabOptional.isEmpty() || !cabOptional.get().isAvailable()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cab is not available");
         }
-        // Update cab availability to false
         ac.projects.cablelo.model.Cab cab = cabOptional.get();
         cab.setAvailable(false);
         cabRepository.save(cab);
@@ -92,7 +88,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public ResponseEntity<String> deleteBooking(String id) {
         if (bookingRepository.existsById(id)) {
-            // Optionally: Set the cab availability to true if booking is deleted
             Optional<Booking> bookingOpt = bookingRepository.findById(id);
             if (bookingOpt.isPresent()) {
                 String cabId = bookingOpt.get().getCabId();

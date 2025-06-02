@@ -49,7 +49,6 @@ public class AuthServiceImpl implements AuthService {
         if (userRepository.existsByUsername(user.getUsername())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Username already exists");
         }
-        // Encrypt password before saving
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
