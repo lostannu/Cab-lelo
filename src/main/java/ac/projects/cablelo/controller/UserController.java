@@ -1,58 +1,45 @@
 package ac.projects.cablelo.controller;
+
 import ac.projects.cablelo.model.Booking;
 import ac.projects.cablelo.model.User;
-import ac.projects.cablelo.repository.BookingRepository;
 import ac.projects.cablelo.service.BookingService;
 import ac.projects.cablelo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    private BookingRepository bookingRepository;
+    private final UserService userService;
+    private final BookingService bookingService;
 
-    private BookingService bookingService;
+    @GetMapping
+    public ResponseEntity<List<User>> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
-    private UserService userService;
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable String id) {
+        return userService.getUserById(id);
+    }
 
-    @Autowired
-    public UserController(UserService userService, BookingService bookingService, BookingRepository bookingRepository) {
-        this.bookingRepository = bookingRepository;
-        this.userService = userService;
-        this.bookingService = bookingService;
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable String id, @RequestBody User user) {
+        return userService.updateUser(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable String id) {
+        return userService.deleteUser(id);
     }
 
     @GetMapping("/{userId}/bookings")
     public ResponseEntity<List<Booking>> getBookingsByUserId(@PathVariable String userId) {
         return bookingService.findByUserId(userId);
     }
-    @GetMapping
-    public Object getAllUsers(){
-        return userService.getAllUsers();
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable String id){
-        return userService.getUserById(id);
-    }
-    @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody User user){
-        return userService.createUser(user);
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<String> updateUser(@PathVariable String id ,@RequestBody User user){
-        return userService.updateUser(id, user);
-    }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable String id) {
-        return userService.deleteUser(id);
-    }
-
-
-
 }

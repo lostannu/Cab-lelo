@@ -5,6 +5,7 @@ import ac.projects.cablelo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +16,12 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -33,12 +37,17 @@ public class UserServiceImpl implements UserService {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+
+
+
     @Override
     public ResponseEntity<String> createUser(User user) {
-        if (userRepository.findByEmail(user.getEmail()) != null) {
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser.isPresent()) {
             return ResponseEntity.status(HttpStatus.CONFLICT)
                     .body("User with email already exists");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));  // encode password before save
         userRepository.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User created successfully");
     }
