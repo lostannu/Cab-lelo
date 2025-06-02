@@ -1,67 +1,14 @@
 package ac.projects.cablelo.service;
 
 import ac.projects.cablelo.model.Driver;
-import ac.projects.cablelo.repository.DriverRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class DriverService {
-
-    private DriverRepository driverRepository;
-    @Autowired
-    public DriverService(DriverRepository driverRepository) {
-        this.driverRepository = driverRepository;
-    }
-
-    public ResponseEntity<List<Driver>> getAllDrivers() {
-        List<Driver> ls=driverRepository.findAll();
-        if(ls.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }else{
-            return new ResponseEntity<>(ls,HttpStatus.OK);
-        }
-
-    }
-    public ResponseEntity<Driver> getDriverById(String id) {
-        Optional<Driver> optionalDriver = driverRepository.findById(id);
-        if (optionalDriver.isPresent()) {
-            return new ResponseEntity<>(optionalDriver.get(), HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    public ResponseEntity<String> createDriver(Driver driver) {
-        driverRepository.save(driver);
-        return new ResponseEntity<>("Driver Created ",HttpStatus.CREATED);
-    }
-    public ResponseEntity<String> updateDriver(String id,Driver updatedDriver) {
-        Optional<Driver> driverOptional = driverRepository.findById(id);
-        if(driverOptional.isPresent()){
-            updatedDriver.setId(id);
-            driverRepository.save(updatedDriver);
-            return new ResponseEntity<>("Driver Updated ", HttpStatus.OK);
-        }
-        return new ResponseEntity<>("No Driver Found with id : "+id,HttpStatus.NOT_FOUND);
-
-
-    }
-    public ResponseEntity<String> deleteDriver(String id) {
-        Optional<Driver> driverOptional = driverRepository.findById(id);
-        if (driverOptional.isPresent()) {
-            driverRepository.delete(driverOptional.get());
-            return new ResponseEntity<>("Driver deleted with id: " + id, HttpStatus.OK);
-
-        }
-        else{
-
-            return new ResponseEntity<>("No Driver with id: " + id,HttpStatus.NOT_FOUND);
-        }
-    }
+public interface DriverService {
+    ResponseEntity<List<Driver>> getAllDrivers();
+    ResponseEntity<Driver> getDriverById(String id);
+    ResponseEntity<String> createDriver(Driver driver);
+    ResponseEntity<String> updateDriver(String id, Driver driver);
+    ResponseEntity<String> deleteDriver(String id);
 }

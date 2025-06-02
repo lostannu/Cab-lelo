@@ -1,39 +1,34 @@
 package ac.projects.cablelo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
-
-@Document(collection = "bookings")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Document(collection = "bookings")
 public class Booking {
 
     @Id
-    @NonNull
     private String id;
 
-    @NonNull
     private String userId;
-    @NonNull
+
     private String driverId;
-    @NonNull
+
     private String cabId;
-    private String pickUpLocation;
+
+    private String pickupLocation;
+
     private String dropLocation;
-    private LocalDateTime bookingTime;
-    private Double distance;
-    private Double fare;
+
+    private String bookingDate;
+
+    private String bookingTime;  // <-- Add this field
+
     private String status;
 
-
-
+    // other fields...
 }

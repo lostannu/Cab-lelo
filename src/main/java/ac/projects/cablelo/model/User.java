@@ -1,36 +1,28 @@
 package ac.projects.cablelo.model;
 
-import com.mongodb.lang.Nullable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Document(collection = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Document(collection = "users")
 public class User {
 
     @Id
-    @NonNull
     private String id;
+
+    private String username;
+
+    private String password;
+
+    private String email;
 
     private String name;
 
-    private String email;
-    private String phone;
-    private String password;
+    private String phoneNumber;  // <-- Add this
 
-    @DBRef
-    private List<Booking> bookings=new ArrayList<>();
-    private String role;
-
+    private String role; // e.g., USER, ADMIN
 }

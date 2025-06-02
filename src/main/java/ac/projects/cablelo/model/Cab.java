@@ -1,28 +1,27 @@
 package ac.projects.cablelo.model;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "cabs")
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
+@Document(collection = "cabs")
 public class Cab {
 
     @Id
-    @NonNull
     private String id;
-
-    private String type;
-    @Indexed(unique=true)
-    @NonNull
-    private String vehicleNumber;
-    private String farePerKm;
+    private String driverId;
+    private String licensePlate;
+    private String model;
+    private String category; // e.g., Sedan, SUV
     private boolean available;
 
+    // Constructors, Getters, and Setters
 }
